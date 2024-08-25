@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+          function getQueryParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        function deleteQuestion(id) {
+            let questions = JSON.parse(localStorage.getItem("questions")) || [];
+            questions = questions.filter(question => question.id !== id);
+            localStorage.setItem("questions", JSON.stringify(questions));
+            alert('Soru başarıyla silindi.');
+            window.location.href = '../admin-panel.html';
+        }
+
+        
+            const id = getQueryParam('id');
+            deleteQuestion(parseInt(id, 10));
+            
+    </script>
+</body>
+</html>

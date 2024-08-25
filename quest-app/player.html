@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <form id="question-form">
+        <div class="title">
+          <input type="text" name="T" id="T" placeholder="Başlık" />
+        </div>
+        <div class="question-box">
+          <div class="question">
+            <textarea type="text" name="Q" id="Q" placeholder="Soru"></textarea>
+          </div>
+          <div class="options">
+            <div class="group">
+              <div class="option">
+                <button type="button" id="A" onclick="answer(this.id)"></button>
+              </div>
+              <div class="option">
+                <button type="button" id="B" onclick="answer(this.id)"></button>
+              </div>
+            </div>
+            <div class="group">
+              <div class="option">
+                <button type="button" id="C" onclick="answer(this.id)"></button>
+              </div>
+              <div class="option">
+                <button type="button" id="D" onclick="answer(this.id)"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <label for="difficulty">Zorluk</label>
+        <select id="difficulty" name="difficulty" disabled>
+          <option value="Kolay">Kolay</option>
+          <option value="Normal">Normal</option>
+          <option value="Zor">Zor</option>
+        </select>
+      </form>
+
+      <h2>Toplam Puan: <span id="total-score">0</span></h2>
+      <h2>Kalan Süre: <span id="timer">60</span> saniye</h2>
+    </div>
+
+    <script>
+        var totalScore = 0;
+        var currentQuestion = null;
+        var time;
+
+
+        function loadQuestion(){
+            var questions = JSON.parse(localStorage.getItem("questions")) || [];
+      if (questions.length > 0) {
+            var randomIndex = Math.floor(Math.random() * questions.length);
+            currentQuestion = questions[randomIndex];
+            
+            document.getElementById('T').value = currentQuestion.title;
+            document.getElementById('Q').value = currentQuestion.question;
+            document.getElementById('A').innerHTML = currentQuestion.optionA;
+            document.getElementById('B').innerHTML = currentQuestion.optionB;
+            document.getElementById('C').innerHTML = currentQuestion.optionC;
+            document.getElementById('D').innerHTML = currentQuestion.optionD;
+            document.getElementById('difficulty').value = currentQuestion.difficulty;
+          } else {
+            alert("Soru bitti! Toplam Puan: " + totalScore);
+            window.location.href = "index.html";
+          }
+        }
+
+        function updateScore(difficulty) {
+            var score = 0;
+            switch (difficulty) {
+                case 'Kolay':
+                    score = 5;
+                    break;
+                case 'Normal':
+                    score = 10;
+                    break;
+                case 'Zor':
+                    score = 25;
+                    break;
+                default:
+                    score = 0;
+            }
+            totalScore += score;
+            document.getElementById('total-score').innerText = totalScore;
+        }
+
+
+        function startTimer(duration) {
+            let timer = duration, seconds;
+            time = setInterval(function () {
+                seconds = parseInt(timer % 60, 10);
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+                document.getElementById('timer').textContent = seconds;
+                if (--timer < 0) {
+                    clearInterval(time);
+                    alert("Süre doldu! Oyun bitti. Toplam Puan: " + totalScore);
+                    window.location.href = "index.html";
+                }
+            }, 1000);
+        }
+      
+        function answer(selectedOption) {
+            if (currentQuestion) {
+                if (selectedOption === currentQuestion.correctOption) {
+                    alert("Doğru cevap!");
+                    loadQuestion();
+                    updateScore(currentQuestion.difficulty);
+                } else {
+                    alert("Yanlış cevap! Oyun bitti.");
+                    window.location.href = "index.html";
+                }
+            } else {
+                console.log('Geçerli soru bulunamadı.');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            startTimer(60);
+            loadQuestion();
+        });
+    </script>
+  </body>
+</html>
