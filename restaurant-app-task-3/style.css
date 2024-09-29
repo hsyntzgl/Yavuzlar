@@ -1,0 +1,81 @@
+body{
+    height: 100vh;
+}
+
+.nav{
+    display: flex;
+    width: 100%;
+    height: 75px;
+    top:  0;
+    background-color: black;
+    justify-content: space-between;
+}
+.nav img{
+    color: black;
+    width: 200px;
+    height: auto;
+    padding: 20px;
+}
+.nav ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: red;    
+}
+.nav ul li{
+    float: left;
+}
+.nav ul li a{
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+.nav ul li a:hover{
+    background-color: black;
+}
+.banner{
+    width: 100%;
+    height: 400px;
+    background-color: blue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-image: url(images/banner.jpg);
+    background-size: cover;
+    color: white;
+}
+.banner h1{
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50px;
+    padding: 25px;
+}
+.search-bar{
+    width: 500px;
+    height: 40px;
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding: 5px;
+    
+}
+.search-bar:hover{
+    cursor: text;
+}
+#restaurant-title{
+    width: 100%;
+    text-align: center;
+    margin-top: 25px;
+}
+.restaurants{
+    width: 100%;
+    height: auto;
+    padding: 25px;
+}
+.restaurants div{
+    float: left;
+    margin-left: 25px;
+    margin-top: 25px;
+}
