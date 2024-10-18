@@ -2,14 +2,25 @@
 include 'connection.php';
 
 try {
-    $sql = "INSERT INTO users (name, surname, password, username, role) 
-    VALUES ('admin', 'admin', 'admin', 'admin', 'admin')";
 
-    $conn->exec($sql);
+    $password = password_hash('admin', PASSWORD_ARGON2ID);
+
+    $sql = "INSERT INTO users (name, surname, password, username, role) 
+    VALUES (:name, :surname, :password, :username, :role)";
+
+    $stmt = $conn->prepare($sql);
+
+    $stmt->execute([
+        ':name' => 'admin',
+        ':surname' => 'admin',
+        ':password' => $password,
+        ':username' => 'admin',
+        ':role' => 'admin'
+    ]);
 
     echo "<script>alert('kurulum tamamlandı')</script>";
 
-    unlink(__FILE__);
+    //unlink(__FILE__);
 
     header('Location: index.php');
     exit;

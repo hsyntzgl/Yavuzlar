@@ -1,13 +1,13 @@
 <?php
+/*
 if (file_exists('setup.php')) {
     header('Location: setup.php');
     exit; 
 }
-
+*/
 
 include 'src/restaurants.php';
 
-session_start();
 ?>
 
 <!DOCTYPE html>
@@ -23,21 +23,7 @@ session_start();
 
 <body>
 
-    <div class="nav">
-        <img src="logos/navbar-logo.png" alt="logo">
-        <ul>
-            <?php if (isset($_SESSION['login'])) {
-            ?>
-
-            <?php
-            } else {
-            ?> <li><a href="login.php">Giriş Yap</a></li>
-                <li><a href="">Kayıt Ol</a></li>
-            <?php
-            }
-            ?>
-        </ul>
-    </div>
+    <?php include $_SERVER['DOCUMENT_ROOT'] . '/static-elements/nav.php'; ?>
 
     <div class="banner">
         <h1>Yemek ya da market, tüm ihtiyaçların kapında</h1>
@@ -58,16 +44,16 @@ session_start();
         $result = Restaurants::getRestaurants();
         if ($result == null) {
         ?><h2>Yok</h2><?php
-                        } else {
-                            ?> <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="..." alt="Card image cap">
+                    } else {
+                        ?> <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title">Card title</h5>
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                     <a href="#" class="btn btn-primary">Go somewhere</a>
                 </div>
             </div><?php
-                        }
+                    }
                     ?>
 
 

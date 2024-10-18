@@ -1,0 +1,16 @@
+body{
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    color: white;
+}
+
+.logo{
+    margin-top: 50px;
+    width: 500px;
+    height: auto;
+}
+
+th, td{
+    border: 1px solid white;
+}
