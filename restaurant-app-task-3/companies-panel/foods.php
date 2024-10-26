@@ -79,7 +79,7 @@
                     <h6>' . $food['name'] . '</h6>
                     <p>' . $food['description'] . '</p>
                     <p><strong>Fiyat: ' . $food['price'] . ' TL</strong></p>
-                    <a href="/companies-panel/foods.php?id=' . $food['id'] . '" class="btn btn-secondary">Sipariş Ver</a>
+                    <a href="/companies-panel/foods/food.php?id=' . $food['id'] . '&company_id='. $company_id .'" class="btn btn-secondary">Düzenle</a>
                     <a href="/src/foods.php?action=delete&id=' . $food['id'] . '" class="btn btn-danger">Sil</a>
                 </div>';
                 }

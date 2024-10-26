@@ -25,6 +25,7 @@
 
     <a href="foods.php?id=<?php echo $company_id ?>">Tüm yemekler</a>
     <a href="restaurants.php?id=<?php echo $company_id ?>">Restoranlar</a>
+    <a href="ordermanagement.php?id=<?php echo $company_id ?>">Siparişler</a>
     <a href="coupons.php">Kupon yönetimi</a>
 </body>
 

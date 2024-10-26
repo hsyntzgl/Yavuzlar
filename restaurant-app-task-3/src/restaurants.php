@@ -1,6 +1,6 @@
 <?php
 
-include (__DIR__ . '/../connection.php');
+include(__DIR__ . '/../connection.php');
 
 class Restaurants
 {
@@ -26,6 +26,22 @@ class Restaurants
             return -2;
         }
     }
+    public static function addComment($comment)
+    {
+        global $conn;
+
+        $sql = "INSERT INTO comments (user_id, restaurant_id, title, description, score, created_at) VALUES(:user_id, :restaurant_id, :title, :description, :score, NOW())";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':user_id', $comment['user_id']);
+        $stmt->bindParam(':restaurant_id', $comment['restaurant_id']);
+        $stmt->bindParam(':title', $comment['title']);
+        $stmt->bindParam(':description', $comment['comment']);
+        $stmt->bindParam(':score', $comment['star']);
+
+        return $stmt->execute();
+    }
+
     public static function checkRestaurantExist($name)
     {
         global $conn;
@@ -70,6 +86,22 @@ class Restaurants
         return $stmt->execute();
     }
 
+    public static function updateComment($comment)
+    {
+        global $conn;
+
+        $sql = "UPDATE comments SET title = :title, description = :description, score = :score, updated_at = NOW() 
+        WHERE id = :id";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':id', $comment['id']);
+        $stmt->bindParam(':title', $comment['title']);
+        $stmt->bindParam(':description', $comment['comment']);
+        $stmt->bindParam(':score', $comment['star']);
+
+        return $stmt->execute();
+    }
+
     public static function getRestaurants()
     {
         global $conn;
@@ -78,6 +110,54 @@ class Restaurants
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getCompanyId($restaurant_id)
+    {
+
+        global $conn;
+        $query = "SELECT * FROM restaurants WHERE id = :id AND deleted_at IS NULL";
+
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':id', $restaurant_id);
+        $stmt->execute();
+
+        $result = $stmt->fetch();
+
+        if ($result != null) {
+            return $result['company_id'];
+        }
+        return null;
+    }
+
+    public static function getRestaurantComments($restaurant_id)
+    {
+
+        global $conn;
+
+        $query = "SELECT * FROM comments WHERE restaurant_id = :restaurant_id";
+
+        $stmt = $conn->prepare($query);
+
+        $stmt->bindParam(':restaurant_id', $restaurant_id);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public static function getRestaurantComment($id)
+    {
+        global $conn;
+
+        $query = "SELECT * FROM comments WHERE id = :id";
+
+        $stmt = $conn->prepare($query);
+
+        $stmt->bindParam(':id', $id);
+
+        $stmt->execute();
+
+        return $stmt->fetch();
     }
 
     public static function deleteRestaurant($id)
@@ -219,9 +299,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ];
 
         if (Restaurants::updateRestaurant($newRestaurantData)) {
-            echo "<script>alert('Restoran başarıyla güncellendi'); window.location.href = '/companies-panel/restaurant-details.php?id=". $id ."';</script>";
+            echo "<script>alert('Restoran başarıyla güncellendi'); window.location.href = '/companies-panel/restaurant-details.php?id=" . $id . "';</script>";
         } else {
             echo "<script>alert('Güncellenemedi'); history.back(); </script>";
+        }
+    } elseif ($_POST['action'] == 'addComment') {
+        $user_id = $_POST['user_id'];
+        $restaurant_id = $_POST['restaurant_id'];
+        $star = $_POST['star'];
+        $comment = $_POST['comment'];
+        $title = $_POST['title'];
+
+        $commentDetails = [
+            'user_id' => $user_id,
+            'restaurant_id' => $restaurant_id,
+            'star' => $star,
+            'comment' => $comment,
+            'title' => $title
+        ];
+
+        if (Restaurants::addComment($commentDetails)) {
+            echo "<script>alert('Yorum Eklendi'); window.history.back(); window.location.reload();</script>";
+            exit;
+        } else {
+            echo "<script>alert('Yorum Eklenemedi'); window.history.back(); window.location.reload();</script>";
+            exit;
+        }
+    } elseif ($_POST['action'] == 'updateComment') {
+        $id = $_POST['id'];
+        $restaurant_id = $_POST['restaurant_id'];
+        $star = $_POST['star'];
+        $comment = $_POST['comment'];
+        $title = $_POST['title'];
+
+        $commentDetails = [
+            'id' => $id,
+            'star' => $star,
+            'comment' => $comment,
+            'title' => $title
+        ];
+
+        if (Restaurants::updateComment($commentDetails)) {
+            echo "<script>alert('Yorum Güncellendi'); window.location.href = '/customer-panel/restaurants.php?id=" . $restaurant_id . "'</script>";
+            exit;
+        } else {
+            echo "<script>alert('Yorum Güncellenemedi'); window.history.back(); window.location.reload();</script>";
+            exit;
         }
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {

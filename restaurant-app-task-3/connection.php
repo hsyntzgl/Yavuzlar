@@ -1,5 +1,5 @@
 <?php
-$servername = "127.0.0.1";
+$servername = "db";
 $username = "root";
 $password = "12345678";
 $dbname = "yavuzlar_task_3";

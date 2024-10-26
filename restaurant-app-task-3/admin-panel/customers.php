@@ -85,10 +85,14 @@
             echo $user['name'] . ' ' . $user['surname'];
             echo        '</h5><h6 class="card-subtitle mb-2 text-muted">Rol: ';
             echo $user['role'];
-            echo '</h6>
-            <a href="../customer-panel/profile.php?user_id=' . $user['id'];
-            echo '" class="card-link">Profilini Gör</a>
-            <form action="" method="POST">
+            echo '</h6>';
+
+            if($user['role'] == 'customer'){
+                echo '<a href="../customer-panel/orders.php?user_id=' . $user['id'] . '&action=active" class="card-link">Aktif Siparişler</a>';    
+            }
+
+            echo '<a href="../customer-panel/profile.php?user_id=' . $user['id'] . '" class="card-link">Profilini Gör</a>
+            <form action="/src/users.php" method="POST">
                         <input type="hidden" name="delete_id" value="' . $user['id'] . '">
                         <input type="hidden" name="action" value="delete">
                         <button type="submit" name="delete_user" class="card-link btn btn-danger">Sil</button>

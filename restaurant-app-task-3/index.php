@@ -1,10 +1,12 @@
 <?php
-/*
 if (file_exists('setup.php')) {
     header('Location: setup.php');
     exit; 
 }
-*/
+
+if(session_status() == PHP_SESSION_NONE){
+    session_start();
+}
 
 include 'src/restaurants.php';
 
@@ -41,18 +43,22 @@ include 'src/restaurants.php';
 
     <div class="restaurants">
         <?php
-        $result = Restaurants::getRestaurants();
-        if ($result == null) {
+        $results = Restaurants::getRestaurants();
+        if (empty($results)) {
         ?><h2>Yok</h2><?php
                     } else {
-                        ?> <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="" alt="Card image cap">
+
+                    foreach ($results as $result) {
+                        echo '<div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="'. $result['image_path'] .'" alt="Card image cap">
                 <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <h5 class="card-title">' . $result['name'] . '</h5>
+                    <p class="card-text">' . $result['description'] .'</p>
+                    <a href="/customer-panel/restaurants.php?id='. $result['id'] .'" class="btn btn-primary">Sipariş Ver</a>
                 </div>
-            </div><?php
+            </div>';
+                    }
+                        ?> <?php
                     }
                     ?>
 
